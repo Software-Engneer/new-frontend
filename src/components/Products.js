@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Navbar from './Navbar';
@@ -19,16 +19,7 @@ const Products = () => {
   const { getAuthHeaders, token } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!token) {
-      navigate('/login');
-      return;
-    }
-    console.log('Products component mounted, fetching products...');
-    fetchProducts();
-  }, [token, navigate], [fetchProducts]);
-
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
       setError('');
@@ -59,7 +50,16 @@ const Products = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [getAuthHeaders]);
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+    console.log('Products component mounted, fetching products...');
+    fetchProducts();
+  }, [token, navigate, fetchProducts]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
