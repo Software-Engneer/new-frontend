@@ -4,6 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import Navbar from './Navbar';
 import './Products.css';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -25,7 +27,7 @@ const Products = () => {
       setError('');
       console.log('Initiating products fetch from API...');
       
-      const response = await fetch('http://localhost:5000/api/products', {
+      const response = await fetch(`${API_URL}/api/products`, {
         headers: getAuthHeaders(),
         credentials: 'include'
       });
@@ -68,8 +70,8 @@ const Products = () => {
       setError('');
 
       const url = editingProduct 
-        ? `http://localhost:5000/api/products/${editingProduct.id}`
-        : 'http://localhost:5000/api/products';
+        ? `${API_URL}/api/products/${editingProduct.id}`
+        : `${API_URL}/api/products`;
 
       const response = await fetch(url, {
         method: editingProduct ? 'PUT' : 'POST',
@@ -110,7 +112,7 @@ const Products = () => {
     
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:5000/api/products/${id}`, {
+      const response = await fetch(`${API_URL}/api/products/${id}`, {
         method: 'DELETE',
         headers: getAuthHeaders(),
         credentials: 'include'
