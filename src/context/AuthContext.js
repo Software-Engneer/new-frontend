@@ -76,17 +76,16 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/auth/logout`, {
+      await fetch(`${API_URL}/api/auth/logout`, {
         method: 'POST',
         credentials: 'include'
       });
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      setToken(null);
       setUser(null);
+      setToken(null);
     } catch (error) {
       console.error('Logout error:', error);
-      throw error;
     }
   };
 
