@@ -26,7 +26,7 @@ const Products = () => {
     }
     console.log('Products component mounted, fetching products...');
     fetchProducts();
-  }, [token, navigate]);
+  }, [token, navigate], [fetchProducts]);
 
   const fetchProducts = async () => {
     try {
