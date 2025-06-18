@@ -7,6 +7,15 @@ const API_URL = process.env.NODE_ENV === 'production'
   ? 'https://todo-api-2k4p.onrender.com'  // Your actual backend URL
   : 'http://localhost:5000';
 
+// Common fetch configuration
+const fetchConfig = {
+  credentials: 'include',
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -26,14 +35,9 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await fetch(`${API_URL}/api/auth/login`, {
+        ...fetchConfig,
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-        credentials: 'include',
-        mode: 'cors'
+        body: JSON.stringify({ email, password })
       });
 
       const data = await response.json();
@@ -56,14 +60,9 @@ export const AuthProvider = ({ children }) => {
   const register = async (username, email, password) => {
     try {
       const response = await fetch(`${API_URL}/api/auth/register`, {
+        ...fetchConfig,
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({ username, email, password }),
-        credentials: 'include',
-        mode: 'cors'
+        body: JSON.stringify({ username, email, password })
       });
 
       const data = await response.json();
@@ -86,13 +85,8 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await fetch(`${API_URL}/api/auth/logout`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        credentials: 'include',
-        mode: 'cors'
+        ...fetchConfig,
+        method: 'POST'
       });
       localStorage.removeItem('token');
       localStorage.removeItem('user');
@@ -105,9 +99,8 @@ export const AuthProvider = ({ children }) => {
 
   const getAuthHeaders = () => {
     return {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      ...fetchConfig.headers,
+      'Authorization': `Bearer ${token}`
     };
   };
 
