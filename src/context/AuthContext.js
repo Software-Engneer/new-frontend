@@ -26,9 +26,11 @@ export const AuthProvider = ({ children }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify({ email, password }),
         credentials: 'include',
+        mode: 'cors'
       });
 
       const data = await response.json();
@@ -43,6 +45,7 @@ export const AuthProvider = ({ children }) => {
       setUser(data.user);
       return data;
     } catch (error) {
+      console.error('Login error:', error);
       throw error;
     }
   };
@@ -53,9 +56,11 @@ export const AuthProvider = ({ children }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         body: JSON.stringify({ username, email, password }),
         credentials: 'include',
+        mode: 'cors'
       });
 
       const data = await response.json();
@@ -70,6 +75,7 @@ export const AuthProvider = ({ children }) => {
       setUser(data.user);
       return data;
     } catch (error) {
+      console.error('Registration error:', error);
       throw error;
     }
   };
@@ -78,7 +84,12 @@ export const AuthProvider = ({ children }) => {
     try {
       await fetch(`${API_URL}/api/auth/logout`, {
         method: 'POST',
-        credentials: 'include'
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        credentials: 'include',
+        mode: 'cors'
       });
       localStorage.removeItem('token');
       localStorage.removeItem('user');
