@@ -2,7 +2,10 @@ import { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext(null);
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+// Determine the API URL based on the environment
+const API_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://your-backend-url.onrender.com'  // Replace with your actual backend URL
+  : 'http://localhost:5000';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
